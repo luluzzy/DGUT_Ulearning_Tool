@@ -129,6 +129,19 @@
         document.getElementById("speedUp").onclick = () => controlSpeed(1);
         document.getElementById("speedDown").onclick = () => controlSpeed(-1);
         logBox = document.getElementById("logBox");
+
+        controlPanel.onmousedown = function (e) {
+            let offsetX = e.clientX - controlPanel.offsetLeft;
+            let offsetY = e.clientY - controlPanel.offsetTop;
+
+            document.onmousemove = function (e) {
+                controlPanel.style.left = e.clientX - offsetX + "px";
+                controlPanel.style.top = e.clientY - offsetY + "px";
+            };
+
+            document.onmouseup = function () { document.onmousemove = null; };
+        };
+
     }
 
     function controlSpeed(speed) {
