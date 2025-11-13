@@ -74,6 +74,7 @@
                     }
                 }
             });
+            Yukilog(`选择题选择: ${answerList}`);
         }
 
         judge(questionNode, answerList) {
@@ -156,7 +157,7 @@
             Yukilog("(´ ∀ ` *) 找到视频，开始刷课啦！");
             video.playbackRate = video_speed;
             video.muted = true; // mute the video by default
-            video.play().catch(e => log("播放失败，请手动点击一次。"));
+            video.play().catch(e => Yukilog("播放失败，请手动点击一次。"));
 
             const intervalId = setInterval(() => {
                 if (!document.contains(video)) {
@@ -167,7 +168,10 @@
                 if (video.paused) video.play();
             }, 2000);
 
-            video.addEventListener("ended", goNext);
+            video.addEventListener("ended", () => {
+                Yukilog("视频播放结束。");
+                goNext();
+            });
 
         }
 
@@ -191,21 +195,19 @@
         const btn = document.querySelector('.btn-submit');
         if (btn) {
             btn.click();
-            Yukilog("按钮已点击");
         } else {
             setTimeout(clickSubmitButton, 1000);
         }
     }
 
 
-
     function goNext() {
-        log("(* ^ ω ^) 视频播放完毕，自动跳下一节...");
-        let nextBtn = document.querySelector('.next-page-btn.cursor') || document.querySelector('[data-bind*="nextPage"]');
+        Yukilog("(* ^ ω ^) 视频播放完毕，自动跳下一节...");
+        let nextBtn = document.querySelector(".next-btn,.btn-next,.nextVideoBtn,.mobile-next-page-btn");
         if (nextBtn && !nextBtn.classList.contains('disabled')) {
             nextBtn.click();
         } else {
-            log("未找到或无法点击下一节按钮，可能是本章结束。");
+            Yukilog("未找到或无法点击下一节按钮，可能是本章结束。");
         }
     }
 
