@@ -1,9 +1,14 @@
 // ==UserScript==
 // @name         DGUT Ulearning Tool
+// @version 1.0
 // @match        https://ua.dgut.edu.cn/learnCourse/learnCourse.html*
 // @description  一个适用于新版本DGUT U学院的脚本，支持自动播放视频，调整倍速，并从官方API获取章节测验答案。
 // @run-at       document-end
 // @grant        GM_xmlhttpRequest
+// @license MIT
+// @namespace https://greasyfork.org/users/1537344
+// @downloadURL https://update.greasyfork.org/scripts/555722/DGUT%20Ulearning%20Tool.user.js
+// @updateURL https://update.greasyfork.org/scripts/555722/DGUT%20Ulearning%20Tool.meta.js
 // ==/UserScript==
 
 
@@ -78,11 +83,12 @@
         }
 
         judge(questionNode, answerList) {
-            const btnClass = answerList ? '.right-btn' : '.wrong-btn';
+            const isCorrect = String(answerList) === 'true';
+            const btnClass = isCorrect ? '.right-btn' : '.wrong-btn';
             const btn = questionNode.querySelector(btnClass);
             if (btn && !btn.classList.contains('selected')) {
                 btn.click();
-                Yukilog(`判断题选择: ${answerList ? '正确' : '错误'}`);
+                Yukilog(`判断题选择: ${isCorrect ? 'true' : 'false'}`);
             }
         }
 
@@ -209,7 +215,7 @@
         if (btn) {
             btn.click();
         } else {
-            setTimeout(clickSubmitButton, 1000);
+            setTimeout(btn.click(), 1000);
         }
     }
 
